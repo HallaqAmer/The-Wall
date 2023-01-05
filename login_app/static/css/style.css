@@ -1,0 +1,46 @@
+.error-message {
+    color: red;
+    font-size: 1vw;
+}
+
+.flex-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.btn {
+    margin-top: 20px;
+}
+
+.btn-logout {
+    position:absolute;
+    right:10px;
+    top:5px;
+}
+
+.message-box {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.btn-comment {
+    position: relative;
+    float: right;
+    bottom: 50px;
+}
+
+.btn-delete {
+    position: relative;
+    float: right;
+    right: 10px;
+}
+
+.date-time {
+    font-style: italic;
+    font-size: 1.2vw;
+    vertical-align: center;
+}
+

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <title>WallBook</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome, {{ name }}!</h1>
+        <h2>Post a message</h2>
+        <form action="/" method="post">
+            {% csrf_token %}
+            <div>
+                <input type="hidden" name="btn_type" value="logout">
+                <button type="submit" class="btn btn-danger text-nowrap btn-logout">Logout</button>
+            </div>
+        </form>
+        <form action="/wall/post/message" method="post">
+            {% csrf_token %}
+            <div class="form-group col-sm-6">
+                <label for="FormUserMsg" class="col-sm-6 col-form-label">Message</label>
+                <div class="col-sm-6">
+                    <textarea class="form-control" id="FormUserMsg" rows="3" name="message"></textarea>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary text-nowrap">post a messsage</button>
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        {% for message in messages reversed %}
+        <div class="message-box">
+            {% if message.user.email_address == request.session.email %}
+                    <form action="/wall/delete" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="msgid" value="{{ message.id }}">
+                        <button type="submit" class="btn btn-danger text-nowrap btn-delete">Delete</button>
+                    </form>
+            {% endif %}
+            <h3>{{ message.user.first_name }}  {{ message.user.last_name }} -- <span class="date-time">{{ message.created_at |timesince }}</span> </h3>
+            <h3>{{ message.message }}</h3>
+            {% for comment in message.comments.all %}
+                <ul><li>{{ comment.comment }} --- {{ comment.user.first_name }} <span class="date-time">{{ comment.created_at |timesince }}</span> </li></ul>
+            {% endfor %}
+            <form action="/wall/comment" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="msgid" value="{{ message.id }}">
+                <div class="form-group col-sm-6">
+                    <label for="FormUserComment" class="col-sm-6 col-form-label"></label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" id="FormUserComment" rows="3"
+                        name="comment" placeholder="add your comment"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success text-nowrap btn-comment">Add Comment</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
